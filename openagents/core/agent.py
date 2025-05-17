@@ -38,7 +38,7 @@ class Agent:
         self.tool_registry = tool_registry
         self.verbose = verbose
         self.state = AgentState()
-        
+                
         # Initialize conversation with system prompt
         self.state.add_message("system", system_prompt, None)
         
@@ -57,8 +57,11 @@ class Agent:
         self.state.add_message(role, content, tool_call)
         
         if self.verbose:
-            logger.debug(f"Added message: {role} - {content[:50]}...")
-    
+            if type(content) == str:
+                logger.debug(f"Added message: {role} - {content[:50]}...")
+            else:
+                logger.debug(f"'content' is not a string. Added message: {role} - {content}")
+                
     def execute_tool(self, tool_name: str, arguments: Dict[str, Any]) -> Any:
         """Execute a tool by name with the given arguments
         

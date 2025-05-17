@@ -3,7 +3,7 @@ LLM provider registry for OpenAgents framework.
 """
 from typing import Dict, Type
 from openagents.llm.base import BaseLLM
-from openagents.llm.ollama import OllamaLLM
+from openagents.llm.ollama_me import OllamaLLM
 
 
 class LLMRegistry:

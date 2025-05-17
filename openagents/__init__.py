@@ -47,6 +47,7 @@ def create_agent(
     llm_class = LLMRegistry.get_provider(llm_provider)
     llm = llm_class(model=llm_model, **kwargs)
     
+    print(f"Using LLM: {llm_model}")
     # Create tool registry
     registry = ToolRegistry()
     

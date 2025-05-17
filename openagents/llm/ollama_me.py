@@ -6,9 +6,14 @@ import requests
 from typing import Dict, List, Any, Optional
 import logging
 
-from ollama import chat
-
 from openagents.llm.base import BaseLLM
+
+# Example API usage
+# $ curl http://localhost:11434/api/generate -d '{
+#   "model": "llama3.2",
+#   "prompt": "Why is the sky blue?",
+#   "stream": false
+# }'
 
 logger = logging.getLogger(__name__)
 
@@ -20,17 +25,16 @@ class OllamaLLM(BaseLLM):
         """Initialize the Ollama LLM client
         
         Args:
-            model: Name of the Ollama model to use (e.g., "llama2", "mistral", "phi")
+            model: Name of the Ollama model to use (e.g., "llama3.2", "mistral", "phi")
             base_url: Base URL for the Ollama API
             **kwargs: Additional parameters to pass to Ollama
         """
         super().__init__(model, **kwargs)
         self.base_url = base_url
-        # self.chat_endpoint = f"{base_url}/api/chat"
+        self.chat_endpoint = f"{base_url}/api/chat"
         
     def generate_response(self, 
                          messages: List[Dict[str, Any]], 
-                         stream: bool = False,
                          tools: Optional[List[Dict[str, Any]]] = None) -> Dict[str, Any]:
         """Generate a response using Ollama
         
@@ -45,7 +49,7 @@ class OllamaLLM(BaseLLM):
         data = {
             "model": self.model,
             "messages": self._format_messages(messages),
-            "stream": stream,
+            "stream": False,
             **self.kwargs
         }
         
@@ -55,19 +59,20 @@ class OllamaLLM(BaseLLM):
             data["tools"] = ollama_tools
         
         try:
-            response = chat(
-                data
-            )
-
+            # Make the API call to Ollama
+            response = requests.post(self.chat_endpoint, json=data)
+            response.raise_for_status()
+            response_data = response.json()
+            
             # Process the response
             result = {
-                "content": response.get("message", {}).get("content", ""),
+                "content": response_data.get("message", {}).get("content", ""),
                 "tool_calls": None
             }
             
             # Extract tool calls if present
-            if tools and "tool_calls" in response.get("message", {}):
-                tool_calls = response["message"]["tool_calls"]
+            if tools and "tool_calls" in response_data.get("message", {}):
+                tool_calls = response_data["message"]["tool_calls"]
                 result["tool_calls"] = []
                 
                 for tool_call in tool_calls:
