@@ -1,0 +1,28 @@
+"""
+Project Structure for OpenAgents Framework:
+
+openagents/
+├── __init__.py
+├── core/
+│   ├── __init__.py
+│   ├── agent.py
+│   ├── registry.py
+│   └── state.py
+├── llm/
+│   ├── __init__.py
+│   ├── base.py
+│   ├── ollama.py
+│   └── providers.py
+├── tools/
+│   ├── __init__.py
+│   ├── base.py
+│   ├── general.py
+│   └── registry.py
+├── utils/
+│   ├── __init__.py
+│   └── helpers.py
+└── examples/
+    ├── __init__.py
+    ├── basic_agent.py
+    └── multi_tool_agent.py
+"""
