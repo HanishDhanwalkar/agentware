@@ -8,6 +8,8 @@ import logging
 
 from openagents.llm.base import BaseLLM
 
+# TODO: deepseek api handling
+
 # Example API usage
 # $ curl http://localhost:11434/api/generate -d '{
 #   "model": "llama3.2",
@@ -19,13 +21,12 @@ logger = logging.getLogger(__name__)
 
 
 class OllamaLLM(BaseLLM):
-    """LLM client for Ollama"""
-    
+    """LLM client for Ollama"""    
     def __init__(self, model: str, base_url: str = "http://localhost:11434", **kwargs):
         """Initialize the Ollama LLM client
         
         Args:
-            model: Name of the Ollama model to use (e.g., "llama3.2", "mistral", "phi")
+            model: Name of the Ollama model to use (e.g., "llama3.2", "deepseek-r1:7b",  "mistral", "phi")
             base_url: Base URL for the Ollama API
             **kwargs: Additional parameters to pass to Ollama
         """

@@ -24,7 +24,7 @@ def create_agent(
     name: str,
     system_prompt: str,
     llm_provider: str = "ollama",
-    llm_model: str = "llama3",
+    llm_model: str = "llama3.2",
     include_general_tools: bool = True,
     verbose: bool = False,
     **kwargs
