@@ -1,6 +1,10 @@
 """
 Example demonstrating multiple tools and custom tools.
 """
+
+# TODO:
+# Implement a custom tool and integrate
+
 import logging
 import sys
 import os
@@ -11,7 +15,7 @@ from typing import Dict, Any, Optional
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from openagents.core.agent import Agent
-from openagents.llm.ollama import OllamaLLM
+from openagents.llm.ollama_me import OllamaLLM
 from openagents.tools.registry import ToolRegistry
 from openagents.tools.general import GeneralTools
 from openagents.tools.base import Tool
@@ -86,7 +90,9 @@ def main():
     )
     
     # Create LLM client
-    llm = OllamaLLM(model="llama3")  # Use a model available in your Ollama installation
+    llm = OllamaLLM(
+        model="llama3.2"
+    )  # Use a model available in your Ollama installation
     
     # Create tool registry and register tools
     registry = ToolRegistry()
