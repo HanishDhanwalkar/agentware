@@ -4,7 +4,8 @@ Package initialization for OpenAgents.
 This module initializes the OpenAgents package and provides a simplified API.
 """
 import logging
-from typing import Dict, List, Any, Optional
+import termcolor
+
 
 # Set up package-level logger
 logging.getLogger(__name__).addHandler(logging.NullHandler())
@@ -18,6 +19,9 @@ from openagents.tools.general import GeneralTools
 
 # Package version
 __version__ = "0.1.0"
+
+def print_colored(text, color):
+    print(termcolor.colored(text, color))
 
 
 def create_agent(
@@ -43,11 +47,14 @@ def create_agent(
     Returns:
         Configured agent
     """
+    # print(f"Using LLM: {llm_model}")
+    print(termcolor.colored(f"Creating agent: {name}", "green"))
+    print(termcolor.colored(f"[Using LLM: {llm_model}]", "yellow"))    
+    
     # Create LLM
     llm_class = LLMRegistry.get_provider(llm_provider)
     llm = llm_class(model=llm_model, **kwargs)
     
-    print(f"Using LLM: {llm_model}")
     # Create tool registry
     registry = ToolRegistry()
     

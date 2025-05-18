@@ -8,8 +8,8 @@ client = Client(
 # TODO: deepseek api handling
 
 
-# model = "llama3.2"
-model = "deepseek-r1:7b" 
+model = "llama3.2"
+# model = "deepseek-r1:7b" 
 
 prompt = "Choose a number between 1 and 10. No thinking, just respond with the number."
 
@@ -34,7 +34,7 @@ if stream:
         print(s.get("message", {}).get("content", ""), end="")
   
 else:
-    response = client.chat(**data)
+    response = client.generate(**data)
     print(response.get("message", {}).get("content", ""))
     
     
@@ -45,7 +45,7 @@ else:
 #   "stream": false
 # }'
 
-# curl http://localhost:11434/api/chat -d '{
+# curl http://localhost:11434/api/generate -d '{
 #   "model": "deepseek-r1:7b",
 #   "prompt": "Why is the sky blue?",
 #   "stream": false

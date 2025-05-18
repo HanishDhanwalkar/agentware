@@ -6,6 +6,7 @@ import requests
 from typing import Dict, List, Any, Optional
 import logging
 
+from ollama import chat
 from openagents.llm.base import BaseLLM
 
 # TODO: deepseek api handling
@@ -51,11 +52,11 @@ class OllamaLLM(BaseLLM):
             "model": self.model,
             "messages": self._format_messages(messages),
             "stream": False,
-            **self.kwargs
+            # **self.kwargs
         }
         
         # Add tools if provided and the model supports it
-        if tools:
+        if tools and self.model not in ["mistral", "phi", "deepseek-r1:7b"]:
             ollama_tools = self.get_tools_format(tools)
             data["tools"] = ollama_tools
         
@@ -123,8 +124,7 @@ class OllamaLLM(BaseLLM):
                     "role": message["role"],
                     "content": message["content"]
                 }
-                formatted_messages.append(formatted_message)
-        
+                formatted_messages.append(formatted_message)       
         return formatted_messages
     
     def _parse_tool_arguments(self, arguments: str) -> Dict[str, Any]:
