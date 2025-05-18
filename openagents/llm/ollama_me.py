@@ -9,8 +9,6 @@ import logging
 from ollama import chat
 from openagents.llm.base import BaseLLM
 
-# TODO: deepseek api handling
-
 # Example API usage
 # $ curl http://localhost:11434/api/generate -d '{
 #   "model": "llama3.2",

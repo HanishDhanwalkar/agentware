@@ -5,9 +5,6 @@ client = Client(
     headers={'x-some-header': 'some-value'}
 )
 
-# TODO: deepseek api handling
-
-
 model = "llama3.2"
 # model = "deepseek-r1:7b" 
 
