@@ -28,6 +28,10 @@ TODO:
 ### Features
 TODO:
 1. Websurfer
+2. PDF 
+3. RAG tool
+4. code agent (potential models: DeepseekCoder)
+5. Project planner
 
 
 ## Contributing
