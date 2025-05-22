@@ -31,7 +31,7 @@ if stream:
         print(s.get("message", {}).get("content", ""), end="")
   
 else:
-    response = client.generate(**data)
+    response = client.chat(**data)
     print(response.get("message", {}).get("content", ""))
     
     
