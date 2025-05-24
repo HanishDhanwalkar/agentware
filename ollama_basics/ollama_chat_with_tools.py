@@ -1,27 +1,28 @@
 from ollama import Client
 import json
-# import argparse
+import argparse
+import requests
 
-# parser = argparse.ArgumentParser()
+parser = argparse.ArgumentParser()
 
-# parser.add_argument("--verbose", "-v", action="store_true", help="Enable verbose logging", default=False)
-# parser.add_argument("--model", "-m", choices=["llama3.2", "deepseek-r1:7b"], help="LLM model to use", default="llama3.2")
-# parser.add_argument("--stream", "-s", action="store_true", help="Enable stream mode", default=False)
+parser.add_argument("--verbose", "-v", action="store_true", help="Enable verbose logging", default=False)
+parser.add_argument("--model", "-m", choices=["llama3.2", "deepseek-r1:7b"], help="LLM model to use", default="llama3.2")
+parser.add_argument("--stream", "-s", action="store_true", help="Enable stream mode", default=False)
 
-# args = parser.parse_args()
+args = parser.parse_args()
 
-# print(args)
+print(args)
 
 
-MODEL = "llama3.2"
+MODEL = args.model
 # MODEL = "deepseek-r1:7b" 
 
-STREAM = True
+STREAM = args.stream
 
 
 # TOOLS Definations STARTS HERE
 TOOLS = []
-def add_two_numbers(a: int, b: int) -> int:
+def add_two_numbers(a: float, b: float) -> float:
     """
     Add two numbers
 
@@ -35,6 +36,18 @@ def add_two_numbers(a: int, b: int) -> int:
     return a + b
 
 TOOLS.append(add_two_numbers)
+TOOLS+=[requests.request, requests.get, requests.post]
+
+
+available_functions = {
+    'add_two_numbers': add_two_numbers,
+    'request': requests.request,
+    'get': requests.get,
+    'post': requests.post
+}
+
+if len(TOOLS) != len(available_functions):
+    raise ValueError("Number of tools and functions do not match")
 # TOOLS Definations ENDS HERE
 
 def input_to_llm(prompt):
@@ -68,9 +81,9 @@ def main():
         response = ""
         stream_response = client.chat(
             **data,
-            stream=True,
-            
+            stream=True, 
         )
+        
         for s in stream_response:
             chunk = s.get("message", {}).get("content", "")
             response += chunk
@@ -82,14 +95,12 @@ def main():
             )
         print(response.get("message", {}).get("content", ""))
     
-    available_functions = {
-        'add_two_numbers': add_two_numbers,
-    }
     
-    print(response)
-    print(type(response))
+    
+    print(response.message.content)
+    print(response.message.tool_calls)
 
-    for tool in response.get('tool_calls'):
+    for tool in response.message.tool_calls or []:
         function_to_call = available_functions.get(tool.function.name)
     if function_to_call:
         print('Function output:', function_to_call(**tool.function.arguments))
