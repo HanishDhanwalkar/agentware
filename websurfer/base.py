@@ -9,7 +9,7 @@ def navigate2url(url, headless=False, timeout=0):
     options.headless = headless
     try:
         driver = webdriver.Firefox(options=options)
-        res = driver.get(url)
+        driver.get(url)
         # # Perform some actions on the webpage...
         page_source = driver.page_source
         print(driver.title) 
